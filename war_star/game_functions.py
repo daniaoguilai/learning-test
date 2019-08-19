@@ -37,7 +37,6 @@ def check_keyup_events(event,ship):
 def check_events(ai_settings,screen,stats,sb,play_button,ship,aliens,bullets):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            Settings.high_score.append(stats.high_score)
             sys.exit()
         elif event.type == pygame.KEYDOWN:
             check_keydown_events(event,ai_settings,screen,ship,bullets)
@@ -164,7 +163,9 @@ def check_aliens_bottom(ai_settings, screen, stats,sb, ship, aliens, bullets):
             ship_hit(ai_settings, screen, stats,sb, ship, aliens, bullets)
             break
 def check_high_score(stats,sb):
-    if stats.score > stats.high_score:
-        stats.high_score = stats.score
+    if stats.score > stats.high_score[-1]:
+        stats.high_score.append(stats.score)
+        with open('high_score.txt', 'a') as f:
+            f.write(',' + str(stats.high_score[-1]))
         sb.prep_high_score()
 
